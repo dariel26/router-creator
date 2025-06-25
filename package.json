@@ -1,0 +1,40 @@
+{
+    "name": "router-creator",
+    "version": "1.0.0",
+    "description": "router-creator is a lightweight utility to dynamically build and manage full route definitions, including pathnames, origins, and query or path parameters. It helps you easily construct URLs, inject parameters, and keep route handling consistent across your application.",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "tsup",
+        "test": "jest --coverage"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/dariel26/router-creator.git"
+    },
+    "keywords": [
+        "router",
+        "pathnames",
+        "path",
+        "origin",
+        "url"
+    ],
+    "author": "Dariel Arian Acosta Campos",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/dariel26/router-creator/issues"
+    },
+    "homepage": "https://github.com/dariel26/router-creator#readme",
+    "devDependencies": {
+        "@types/jest": "^30.0.0",
+        "jest": "^30.0.3",
+        "ts-jest": "^29.4.0",
+        "ts-node": "^10.9.2",
+        "tsup": "^8.5.0",
+        "typescript": "^5.8.3"
+    }
+}
