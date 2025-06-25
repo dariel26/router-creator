@@ -32,18 +32,20 @@ jobs:
         outputs:
             changed: ${{ steps.version_check.outputs.changed }}
         steps:
-            - uses: actions/checkout@v4
+            - name: Check out with history
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 2
 
             - name: Get current package version
               id: current
               run: |
                   echo "version=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
 
-            - name: Get previous version from main
+            - name: Get previous version from last commit
               id: previous
               run: |
-                  git fetch origin main --depth=1
-                  git show origin/main:package.json > prev_package.json
+                  git show HEAD^:package.json > prev_package.json
                   echo "version=$(jq -r .version prev_package.json)" >> $GITHUB_OUTPUT
 
             - name: Compare versions
