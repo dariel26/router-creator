@@ -1,4 +1,4 @@
-# Router Creator
+# Router Creator [![codecov](https://codecov.io/gh/dariel26/router-creator/branch/main/graph/badge.svg?token=Y6XK7MPEJU)](https://codecov.io/gh/dariel26/router-creator)
 
 **router-creator** is a lightweight TypeScript utility for building full route trees with support for pathnames, nested segments, parameters, attributes, and origins.
 
