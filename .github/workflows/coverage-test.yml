@@ -1,9 +1,13 @@
-name: Coverage Test
-run-name: Testing the Package
-on: push
+name: Coverage and Publish
+
+on:
+    push:
+        branches:
+            - main
 
 jobs:
     test:
+        name: Run Tests and Coverage
         runs-on: ubuntu-latest
         timeout-minutes: 10
         steps:
@@ -20,3 +24,58 @@ jobs:
               uses: codecov/codecov-action@v5
               with:
                   token: ${{ secrets.CODECOV_TOKEN }}
+
+    check-version:
+        name: Check if version changed
+        runs-on: ubuntu-latest
+        needs: test
+        outputs:
+            changed: ${{ steps.version_check.outputs.changed }}
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Get current package version
+              id: current
+              run: |
+                  echo "version=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
+
+            - name: Get previous version from main
+              id: previous
+              run: |
+                  git fetch origin main --depth=1
+                  git show origin/main:package.json > prev_package.json
+                  echo "version=$(jq -r .version prev_package.json)" >> $GITHUB_OUTPUT
+
+            - name: Compare versions
+              id: version_check
+              run: |
+                  if [ "${{ steps.current.outputs.version }}" != "${{ steps.previous.outputs.version }}" ]; then
+                    echo "changed=true" >> $GITHUB_OUTPUT
+                  else
+                    echo "changed=false" >> $GITHUB_OUTPUT
+                  fi
+
+    publish:
+        name: Publish to NPM
+        runs-on: ubuntu-latest
+        needs: [test, check-version]
+        if: needs.check-version.outputs.changed == 'true'
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  registry-url: "https://registry.npmjs.org"
+
+            - name: Install dependencies
+              run: yarn
+
+            - name: Build package
+              run: yarn build
+
+            - name: Publish to NPM
+              run: npm publish --access public
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
