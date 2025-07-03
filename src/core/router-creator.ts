@@ -80,7 +80,7 @@ export class RouterCreator {
         const paths = RouterCreator.getPathnameChildrenOf(path ?? this);
 
         const [firstPart, ...rest] = parts;
-        const pathExactlyMatch = paths.find((p) => p.getFullPath({ maxParents: 0 }).replace("/", "") === firstPart);
+        const pathExactlyMatch = paths.find((p) => p.getPath().replace("/", "") === firstPart);
 
         if (pathExactlyMatch && rest.length === 0) return { matched: true, pathTrace: [pathExactlyMatch] };
 
@@ -111,6 +111,6 @@ export class RouterCreator {
     }
 
     private static filterPathnamesWithParamNotation(paths: Path[]) {
-        return paths.filter((p) => p.getFullPath({ maxParents: 0 }).includes(":"));
+        return paths.filter((p) => p.getPath().includes(":"));
     }
 }

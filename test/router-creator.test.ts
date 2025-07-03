@@ -36,69 +36,55 @@ describe("Route Builder", () => {
     });
 
     it("Should return all correct fullPath", () => {
-        expect(routes.private.users.root.getFullPath()).toBe("/private/users");
-        expect(routes.private.users.id_user.getFullPath()).toBe("/private/users/:id_user");
-        expect(routes.private.lands.getFullPath()).toBe("/private/lands");
-        expect(routes.private.lands.id_land.getFullPath()).toBe("/private/lands/:id_land");
-        expect(routes.private.captures.root.getFullPath()).toBe("/private/captures");
-        expect(routes.private.captures.id_capture.getFullPath()).toBe("/private/captures/:id_capture");
-        expect(routes.private.captures.id_capture.upload.files.getFullPath()).toBe(
+        expect(routes.private.users.root.get()).toBe("/private/users");
+        expect(routes.private.users.id_user.get()).toBe("/private/users/:id_user");
+        expect(routes.private.lands.get()).toBe("/private/lands");
+        expect(routes.private.lands.id_land.get()).toBe("/private/lands/:id_land");
+        expect(routes.private.captures.root.get()).toBe("/private/captures");
+        expect(routes.private.captures.id_capture.get()).toBe("/private/captures/:id_capture");
+        expect(routes.private.captures.id_capture.upload.files.get()).toBe(
             "/private/captures/:id_capture/upload/files"
         );
-        expect(routes.private.auth.signout.getFullPath()).toBe("/private/auth/sign-out");
-        expect(routes.private.auth.session.getFullPath()).toBe("/private/auth/session");
+        expect(routes.private.auth.signout.get()).toBe("/private/auth/sign-out");
+        expect(routes.private.auth.session.get()).toBe("/private/auth/session");
 
-        expect(routes.public.auth.signin.getFullPath()).toBe("/public/auth/sign-in");
-        expect(routes.public.auth.signup.getFullPath()).toBe("/public/auth/sign-up");
-        expect(routes.public.auth.forgot_password.getFullPath()).toBe("/public/auth/forgot-password");
+        expect(routes.public.auth.signin.get()).toBe("/public/auth/sign-in");
+        expect(routes.public.auth.signup.get()).toBe("/public/auth/sign-up");
+        expect(routes.public.auth.forgot_password.get()).toBe("/public/auth/forgot-password");
+    });
+
+    it("Should return all correct stopped pathnames", () => {
+        expect(routes.private.captures.id_capture.upload.start().files.get()).toBe("/files");
+        expect(routes.private.captures.id_capture.start().upload.files.get()).toBe("/upload/files");
+        expect(routes.private.captures.start().id_capture.upload.files.get()).toBe("/:id_capture/upload/files");
+        expect(routes.private.start().captures.id_capture.upload.files.get()).toBe(
+            "/captures/:id_capture/upload/files"
+        );
+        expect(routes.private.captures.id_capture.upload.files.get()).toBe(
+            "/private/captures/:id_capture/upload/files"
+        );
+    });
+
+    it("Should return all correct setted pathnames", () => {
+        expect(routes.private.captures.id_capture.set("34").upload.files.get()).toBe(
+            "/private/captures/34/upload/files"
+        );
+        expect(routes.private.captures.id_capture.set("33").upload.files.get()).toBe(
+            "/private/captures/33/upload/files"
+        );
+        expect(routes.private.captures.id_capture.set("35").upload.files.get()).toBe(
+            "/private/captures/35/upload/files"
+        );
+        expect(routes.private.captures.id_capture.set("37").upload.files.get()).toBe(
+            "/private/captures/37/upload/files"
+        );
+        expect(routes.private.captures.id_capture.upload.files.get()).toBe(
+            "/private/captures/:id_capture/upload/files"
+        );
     });
 
     it("Should return correctly fullUrl", () => {
-        expect(routes.private.users.root.getFullUrl()).toBe(ORIGIN + "/private/users");
-    });
-
-    it("Should return all correct fullPath with maxParents === 1", () => {
-        expect(routes.private.users.root.getFullPath({ maxParents: 1 })).toBe("/users");
-        expect(routes.private.users.id_user.getFullPath({ maxParents: 1 })).toBe("/users/:id_user");
-        expect(routes.private.lands.getFullPath({ maxParents: 1 })).toBe("/private/lands");
-        expect(routes.private.lands.id_land.getFullPath({ maxParents: 1 })).toBe("/lands/:id_land");
-        expect(routes.private.captures.root.getFullPath({ maxParents: 1 })).toBe("/captures");
-        expect(routes.private.captures.id_capture.getFullPath({ maxParents: 1 })).toBe("/captures/:id_capture");
-        expect(routes.private.captures.id_capture.upload.files.getFullPath({ maxParents: 1 })).toBe("/upload/files");
-        expect(routes.private.auth.signout.getFullPath({ maxParents: 1 })).toBe("/auth/sign-out");
-        expect(routes.private.auth.session.getFullPath({ maxParents: 1 })).toBe("/auth/session");
-
-        expect(routes.public.auth.signin.getFullPath({ maxParents: 1 })).toBe("/auth/sign-in");
-        expect(routes.public.auth.signup.getFullPath({ maxParents: 1 })).toBe("/auth/sign-up");
-        expect(routes.public.auth.forgot_password.getFullPath({ maxParents: 1 })).toBe("/auth/forgot-password");
-    });
-
-    it("Should return all correct fullPath with maxParents === 0", () => {
-        expect(routes.private.users.root.getFullPath({ maxParents: 0 })).toBe("/");
-        expect(routes.private.users.id_user.getFullPath({ maxParents: 0 })).toBe("/:id_user");
-        expect(routes.private.lands.getFullPath({ maxParents: 0 })).toBe("/lands");
-        expect(routes.private.lands.id_land.getFullPath({ maxParents: 0 })).toBe("/:id_land");
-        expect(routes.private.captures.root.getFullPath({ maxParents: 0 })).toBe("/");
-        expect(routes.private.captures.id_capture.getFullPath({ maxParents: 0 })).toBe("/:id_capture");
-        expect(routes.private.captures.id_capture.upload.files.getFullPath({ maxParents: 0 })).toBe("/files");
-        expect(routes.private.auth.signout.getFullPath({ maxParents: 0 })).toBe("/sign-out");
-        expect(routes.private.auth.session.getFullPath({ maxParents: 0 })).toBe("/session");
-
-        expect(routes.public.auth.signin.getFullPath({ maxParents: 0 })).toBe("/sign-in");
-        expect(routes.public.auth.signup.getFullPath({ maxParents: 0 })).toBe("/sign-up");
-        expect(routes.public.auth.forgot_password.getFullPath({ maxParents: 0 })).toBe("/forgot-password");
-    });
-
-    it("Should return all correct fullPath with and without real params", () => {
-        const routeLand = routes.private.lands.id_land.setParam("123");
-
-        expect(routeLand.getFullPath({ resolveParams: true })).toBe("/private/lands/123");
-        expect(routeLand.getFullPath()).toBe("/private/lands/:id_land");
-
-        const routeCaptureUploadFiles = routes.private.captures.id_capture.setParam("123").upload.files;
-
-        expect(routeCaptureUploadFiles.getFullPath({ resolveParams: true })).toBe("/private/captures/123/upload/files");
-        expect(routeCaptureUploadFiles.getFullPath()).toBe("/private/captures/:id_capture/upload/files");
+        expect(routes.private.users.root.getUrl()).toBe(ORIGIN + "/private/users");
     });
 
     it("Should match all pathnames", () => {
