@@ -1,6 +1,6 @@
 {
     "name": "router-creator",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "router-creator is a lightweight utility to dynamically build and manage full route definitions, including pathnames, origins, and query or path parameters. It helps you easily construct URLs, inject parameters, and keep route handling consistent across your application.",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
@@ -21,7 +21,8 @@
         "pathnames",
         "path",
         "origin",
-        "url"
+        "creator",
+        "router-creator"
     ],
     "author": "Dariel Arian Acosta Campos",
     "license": "ISC",
