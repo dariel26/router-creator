@@ -17,7 +17,7 @@ export class RouterCreator {
 
     private static getPathObjectResult<Obj extends PathObject>(
         object: Obj,
-        parent: Path | RouterCreator | null
+        parent: Path | RouterCreator
     ): PathObjectResult<Obj> {
         const result = {} as PathObjectResult<Obj>;
         const objectKeys = Object.keys(object);
@@ -47,15 +47,15 @@ export class RouterCreator {
         return result;
     }
 
-    private static resultForString(value: string, parent: Path | RouterCreator | null): Path {
+    private static resultForString(value: string, parent: Path | RouterCreator): Path {
         return new Path(value, parent);
     }
 
-    private static resultForNull(key: string, parent: Path | RouterCreator | null): Path {
+    private static resultForNull(key: string, parent: Path | RouterCreator): Path {
         return new Path(key, parent);
     }
 
-    private static resultForObject(key: string, value: any, parent: Path | RouterCreator | null): Path {
+    private static resultForObject(key: string, value: any, parent: Path | RouterCreator): Path {
         const pathStr = (value as any)._path ?? key;
         const attributes = (value as any)._att;
         const path = new Path(pathStr, parent, attributes);
@@ -102,7 +102,7 @@ export class RouterCreator {
     }
 
     private static getPathnameChildrenOf(parent: Path | RouterCreator) {
-        const pathnameKeys = Object.keys(parent ?? this);
+        const pathnameKeys = Object.keys(parent);
 
         return pathnameKeys.map((key) => {
             if (parent instanceof Path) return (parent as any)[key] as Path;

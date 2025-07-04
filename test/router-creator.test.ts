@@ -65,7 +65,7 @@ describe("Route Builder", () => {
         );
     });
 
-    it("Should return all correct setted pathnames", () => {
+    it("Should return all correct setted params", () => {
         expect(routes.private.captures.id_capture.set("34").upload.files.get()).toBe(
             "/private/captures/34/upload/files"
         );
@@ -88,7 +88,7 @@ describe("Route Builder", () => {
     });
 
     it("Should match all pathnames", () => {
-        const pathname1 = "/private/users";
+        const pathname1 = "/private/users/321";
         const pathname2 = "/private/captures/123/upload/files";
         const pathname3 = "/private/example/123/321/final";
 
@@ -115,5 +115,10 @@ describe("Route Builder", () => {
 
         expect(routes.hasPathname(pathname1)).toBe(false);
         expect(routes.hasPathname(pathname2)).toBe(false);
+    });
+
+    it("Should not create malconfigured paths", () => {
+        const malConfiguredRoute = new RouterCreator("").createPathnames({ mal_formed: 123 as unknown as string });
+        expect(malConfiguredRoute.mal_formed?.get()).toBe(undefined);
     });
 });
