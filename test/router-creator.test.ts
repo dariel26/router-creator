@@ -32,6 +32,7 @@ describe("Route Builder", () => {
                 signup: { _path: "sign-up" },
                 forgot_password: { _path: "forgot-password" },
             },
+            path: { att: {} },
         },
     });
 
@@ -51,6 +52,8 @@ describe("Route Builder", () => {
         expect(routes.public.auth.signin.get()).toBe("/public/auth/sign-in");
         expect(routes.public.auth.signup.get()).toBe("/public/auth/sign-up");
         expect(routes.public.auth.forgot_password.get()).toBe("/public/auth/forgot-password");
+
+        expect(routes.public.path.att.get()).toBe("/public/path/att");
     });
 
     it("Should return all correct stopped pathnames", () => {

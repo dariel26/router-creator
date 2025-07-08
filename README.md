@@ -77,6 +77,12 @@ routes.hasPathname("/private/auth/sign-out", { attribute: "loggable" }); // fals
 
 ---
 
+## ⚠️ WARNING
+
+Create paths that starts with `$` or with the reserved names `get`, `set`, `getParams`, `getOrigin`, etc... May cause unexpected behavior.
+
+--- 
+
 ## 📚 API Overview
 
 ### `Defining Your Route Tree with createPathnames()`
